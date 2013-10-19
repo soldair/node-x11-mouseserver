@@ -6,6 +6,7 @@ var result = document.getElementById('result');
 
 var stream = shoe('/mouse');
 
+alert(3);
 
 var s = through(function (msg) {
 
@@ -32,10 +33,6 @@ d.on('remote', function (remote) {
   var ts = touchStream(touchel,remote);
 
 
-  document.body.on('mousemove',function(){
-    remote.log('mousemove!');
-  });
-
 });
 d.pipe(shoe('/dnode')).pipe(d);
 
@@ -48,11 +45,21 @@ function touchStream(el,remote){
 
 
   var start = function(ev){
-    remote.log('touchstart',arguments);
+    console.log('start');
+    remote.log('touchstart');
+   
+    ev.preventDefault();
+    return false;
   }, end = function(ev){
-    remote.log('touchend',arguments);
+    console.log('end');
+    remote.log('touchend');
+    ev.preventDefault();
+    return false;
   }, move = function(ev){
-    remote.log('touchmove',arguments);
+    console.log('move');
+    remote.log('touchmove');
+    ev.preventDefault();
+    return false;
   };
 
   remote.log('binding touch events');
@@ -67,7 +74,8 @@ function touchStream(el,remote){
   })
 
   return s;
-
 }
 
-
+window.onerror = function(e){
+  alert('error!: '+e+'');
+}
